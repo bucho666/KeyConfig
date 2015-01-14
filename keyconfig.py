@@ -21,10 +21,10 @@ class KeyConfig(Game):
         for status, controller in zip(self._player_status, self._controllers):
             status.update(controller)
 
-    def draw(self):
+    def render(self):
         self._screen.fill()
         for player_state in self._player_status:
-            player_state.draw(self._screen)
+            player_state.render(self._screen)
 
 class PlayerState(object):
     keys = []
@@ -43,8 +43,8 @@ class PlayerState(object):
     def update(self, controller):
         self._status[self._current_state].update(controller)
 
-    def draw(self, screen):
-        self._status[self._current_state].draw(screen)
+    def render(self, screen):
+        self._status[self._current_state].render(screen)
 
     def next(self):
         if self._current_state + 1 >= len(self._status): return
@@ -78,7 +78,7 @@ class KeyBinder(State):
         section = '%dP' % (self._controller_num+1)
         self._config.set(section, self._target_key, key)
 
-    def draw(self, screen):
+    def render(self, screen):
         self.write(screen, self._target_key)
 
 class Ready(State):
@@ -91,7 +91,7 @@ class Ready(State):
         if controller.down_raw_keys():
             self._state.next()
     
-    def draw(self, screen):
+    def render(self, screen):
         self.write(screen, 'Push eny key')
 
 class Done(State):
@@ -99,7 +99,7 @@ class Done(State):
     def update(self, controller):
         pass
     
-    def draw(self, screen):
+    def render(self, screen):
         self.write(screen, 'Done')
 
 if __name__ == '__main__':
